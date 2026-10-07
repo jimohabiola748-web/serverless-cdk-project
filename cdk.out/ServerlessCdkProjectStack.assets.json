@@ -1,0 +1,34 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "3026d3de0d3f6dbf80170c5aef78eda65f50d073394f4bf7b57b0a51c306e434": {
+      "source": {
+        "path": "asset.3026d3de0d3f6dbf80170c5aef78eda65f50d073394f4bf7b57b0a51c306e434",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "771606957800-ca-central-1": {
+          "bucketName": "cdk-hnb659fds-assets-771606957800-ca-central-1",
+          "objectKey": "3026d3de0d3f6dbf80170c5aef78eda65f50d073394f4bf7b57b0a51c306e434.zip",
+          "region": "ca-central-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::771606957800:role/cdk-hnb659fds-file-publishing-role-771606957800-ca-central-1"
+        }
+      }
+    },
+    "1232653dc38297501a164a23f1de46c8d4cb0acccf3636cbbd403f3ba6649b73": {
+      "source": {
+        "path": "ServerlessCdkProjectStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "771606957800-ca-central-1": {
+          "bucketName": "cdk-hnb659fds-assets-771606957800-ca-central-1",
+          "objectKey": "1232653dc38297501a164a23f1de46c8d4cb0acccf3636cbbd403f3ba6649b73.json",
+          "region": "ca-central-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::771606957800:role/cdk-hnb659fds-file-publishing-role-771606957800-ca-central-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

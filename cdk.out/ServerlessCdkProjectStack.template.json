@@ -1,0 +1,908 @@
+{
+ "Resources": {
+  "StudentItemsTableBDE7EBD8": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "id",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "StudentItems"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/StudentItemsTable/Resource"
+   }
+  },
+  "ItemsFunctionServiceRoleC323889C": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsFunction/ServiceRole/Resource"
+   }
+  },
+  "ItemsFunctionServiceRoleDefaultPolicy72D40A1B": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "StudentItemsTableBDE7EBD8",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ItemsFunctionServiceRoleDefaultPolicy72D40A1B",
+    "Roles": [
+     {
+      "Ref": "ItemsFunctionServiceRoleC323889C"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ItemsFunction736859B1": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "x86_64"
+    ],
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-771606957800-ca-central-1",
+     "S3Key": "3026d3de0d3f6dbf80170c5aef78eda65f50d073394f4bf7b57b0a51c306e434.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Ref": "StudentItemsTableBDE7EBD8"
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "ItemsFunctionServiceRoleC323889C",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "ItemsFunctionServiceRoleDefaultPolicy72D40A1B",
+    "ItemsFunctionServiceRoleC323889C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsFunction/Resource",
+    "aws:asset:path": "asset.3026d3de0d3f6dbf80170c5aef78eda65f50d073394f4bf7b57b0a51c306e434",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ItemsApi3788C05C": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "Student Items Service"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Resource"
+   }
+  },
+  "ItemsApiCloudWatchRoleC6F450A7": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/CloudWatchRole/Resource"
+   }
+  },
+  "ItemsApiAccount8ED0A917": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "ItemsApiCloudWatchRoleC6F450A7",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "ItemsApi3788C05C"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Account"
+   }
+  },
+  "ItemsApiDeployment2A6EC5532f1b4098d30f62f444ff08e6f841a907": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "ItemsApi3788C05C"
+    }
+   },
+   "DependsOn": [
+    "ItemsApiitemsidDELETE0785B0E9",
+    "ItemsApiitemsidGET842BCF1E",
+    "ItemsApiitemsidPUT9BA4F1B8",
+    "ItemsApiitemsid9B2E43B3",
+    "ItemsApiitemsGET0F801345",
+    "ItemsApiitemsPOSTE9B0FD12",
+    "ItemsApiitems0C302221"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Deployment/Resource"
+   }
+  },
+  "ItemsApiDeploymentStageprod39700B5C": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "ItemsApiDeployment2A6EC5532f1b4098d30f62f444ff08e6f841a907"
+    },
+    "RestApiId": {
+     "Ref": "ItemsApi3788C05C"
+    },
+    "StageName": "prod"
+   },
+   "DependsOn": [
+    "ItemsApiAccount8ED0A917"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/DeploymentStage.prod/Resource"
+   }
+  },
+  "ItemsApiitems0C302221": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ItemsApi3788C05C",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "items",
+    "RestApiId": {
+     "Ref": "ItemsApi3788C05C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/Resource"
+   }
+  },
+  "ItemsApiitemsGETApiPermissionServerlessCdkProjectStackItemsApiCBD9D3C5GETitemsFBEAAAB9": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ItemsFunction736859B1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ca-central-1:771606957800:",
+       {
+        "Ref": "ItemsApi3788C05C"
+       },
+       "/",
+       {
+        "Ref": "ItemsApiDeploymentStageprod39700B5C"
+       },
+       "/GET/items"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/GET/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items"
+   }
+  },
+  "ItemsApiitemsGETApiPermissionTestServerlessCdkProjectStackItemsApiCBD9D3C5GETitems98D2092A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ItemsFunction736859B1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ca-central-1:771606957800:",
+       {
+        "Ref": "ItemsApi3788C05C"
+       },
+       "/test-invoke-stage/GET/items"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/GET/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items"
+   }
+  },
+  "ItemsApiitemsGET0F801345": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ca-central-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ItemsFunction736859B1",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ItemsApiitems0C302221"
+    },
+    "RestApiId": {
+     "Ref": "ItemsApi3788C05C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/GET/Resource"
+   }
+  },
+  "ItemsApiitemsPOSTApiPermissionServerlessCdkProjectStackItemsApiCBD9D3C5POSTitems508C813F": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ItemsFunction736859B1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ca-central-1:771606957800:",
+       {
+        "Ref": "ItemsApi3788C05C"
+       },
+       "/",
+       {
+        "Ref": "ItemsApiDeploymentStageprod39700B5C"
+       },
+       "/POST/items"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/POST/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.POST..items"
+   }
+  },
+  "ItemsApiitemsPOSTApiPermissionTestServerlessCdkProjectStackItemsApiCBD9D3C5POSTitems2825273D": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ItemsFunction736859B1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ca-central-1:771606957800:",
+       {
+        "Ref": "ItemsApi3788C05C"
+       },
+       "/test-invoke-stage/POST/items"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/POST/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.POST..items"
+   }
+  },
+  "ItemsApiitemsPOSTE9B0FD12": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ca-central-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ItemsFunction736859B1",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ItemsApiitems0C302221"
+    },
+    "RestApiId": {
+     "Ref": "ItemsApi3788C05C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/POST/Resource"
+   }
+  },
+  "ItemsApiitemsid9B2E43B3": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ItemsApiitems0C302221"
+    },
+    "PathPart": "{id}",
+    "RestApiId": {
+     "Ref": "ItemsApi3788C05C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/Resource"
+   }
+  },
+  "ItemsApiitemsidGETApiPermissionServerlessCdkProjectStackItemsApiCBD9D3C5GETitemsid0A4E07D9": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ItemsFunction736859B1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ca-central-1:771606957800:",
+       {
+        "Ref": "ItemsApi3788C05C"
+       },
+       "/",
+       {
+        "Ref": "ItemsApiDeploymentStageprod39700B5C"
+       },
+       "/GET/items/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/GET/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items.{id}"
+   }
+  },
+  "ItemsApiitemsidGETApiPermissionTestServerlessCdkProjectStackItemsApiCBD9D3C5GETitemsid96797F9F": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ItemsFunction736859B1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ca-central-1:771606957800:",
+       {
+        "Ref": "ItemsApi3788C05C"
+       },
+       "/test-invoke-stage/GET/items/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/GET/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items.{id}"
+   }
+  },
+  "ItemsApiitemsidGET842BCF1E": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ca-central-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ItemsFunction736859B1",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ItemsApiitemsid9B2E43B3"
+    },
+    "RestApiId": {
+     "Ref": "ItemsApi3788C05C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/GET/Resource"
+   }
+  },
+  "ItemsApiitemsidPUTApiPermissionServerlessCdkProjectStackItemsApiCBD9D3C5PUTitemsid882510F3": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ItemsFunction736859B1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ca-central-1:771606957800:",
+       {
+        "Ref": "ItemsApi3788C05C"
+       },
+       "/",
+       {
+        "Ref": "ItemsApiDeploymentStageprod39700B5C"
+       },
+       "/PUT/items/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/PUT/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.PUT..items.{id}"
+   }
+  },
+  "ItemsApiitemsidPUTApiPermissionTestServerlessCdkProjectStackItemsApiCBD9D3C5PUTitemsid3F9F6AD2": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ItemsFunction736859B1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ca-central-1:771606957800:",
+       {
+        "Ref": "ItemsApi3788C05C"
+       },
+       "/test-invoke-stage/PUT/items/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/PUT/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.PUT..items.{id}"
+   }
+  },
+  "ItemsApiitemsidPUT9BA4F1B8": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "PUT",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ca-central-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ItemsFunction736859B1",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ItemsApiitemsid9B2E43B3"
+    },
+    "RestApiId": {
+     "Ref": "ItemsApi3788C05C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/PUT/Resource"
+   }
+  },
+  "ItemsApiitemsidDELETEApiPermissionServerlessCdkProjectStackItemsApiCBD9D3C5DELETEitemsid30CFC4CC": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ItemsFunction736859B1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ca-central-1:771606957800:",
+       {
+        "Ref": "ItemsApi3788C05C"
+       },
+       "/",
+       {
+        "Ref": "ItemsApiDeploymentStageprod39700B5C"
+       },
+       "/DELETE/items/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/DELETE/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.DELETE..items.{id}"
+   }
+  },
+  "ItemsApiitemsidDELETEApiPermissionTestServerlessCdkProjectStackItemsApiCBD9D3C5DELETEitemsid7ABE2450": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ItemsFunction736859B1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ca-central-1:771606957800:",
+       {
+        "Ref": "ItemsApi3788C05C"
+       },
+       "/test-invoke-stage/DELETE/items/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/DELETE/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.DELETE..items.{id}"
+   }
+  },
+  "ItemsApiitemsidDELETE0785B0E9": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "DELETE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ca-central-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ItemsFunction736859B1",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ItemsApiitemsid9B2E43B3"
+    },
+    "RestApiId": {
+     "Ref": "ItemsApi3788C05C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/DELETE/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02QW2+DMAyFf0vfg9fSSnumnfa2i+jekQluFy4Jws4QQvz3KaFb+3Q+Wz7HTlLYHZ5hu8GRE101SWtKmM+CulE4cjFXk8XOVSXMX1i2pE4XG2FRLXZlhYV1FdUM71FevdVinFUGO5hztxqifrrW6CmUKy2K9wUykzBkQRTv4eh1Q3JEpls8zKeL/U8NZho6w2ycXRT25opCI04w58SS9Sauu2OmtfNW1Av1rZs6shK6D9VZ8BpvXCEndn7QFC/4K26ZK7+RfLsqtFZalvtcfEYIMvYaJj689F4e7YsK3wU1P/2kB0h3sN3UbEwyeCumI8hX/QUtzyb9lQEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "ServerlessCdkProjectStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "ItemsApiEndpointE9939A7D": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "ItemsApi3788C05C"
+      },
+      ".execute-api.ca-central-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ItemsApiDeploymentStageprod39700B5C"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "ApiUrl": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "ItemsApi3788C05C"
+      },
+      ".execute-api.ca-central-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ItemsApiDeploymentStageprod39700B5C"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

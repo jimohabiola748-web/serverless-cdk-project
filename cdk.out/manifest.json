@@ -1,0 +1,241 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "ServerlessCdkProjectStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "ServerlessCdkProjectStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "ServerlessCdkProjectStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://771606957800/ca-central-1",
+      "properties": {
+        "templateFile": "ServerlessCdkProjectStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::771606957800:role/cdk-hnb659fds-deploy-role-771606957800-ca-central-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::771606957800:role/cdk-hnb659fds-cfn-exec-role-771606957800-ca-central-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-771606957800-ca-central-1/1232653dc38297501a164a23f1de46c8d4cb0acccf3636cbbd403f3ba6649b73.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "ServerlessCdkProjectStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::771606957800:role/cdk-hnb659fds-lookup-role-771606957800-ca-central-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "ServerlessCdkProjectStack.assets"
+      ],
+      "metadata": {
+        "/ServerlessCdkProjectStack/StudentItemsTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "StudentItemsTableBDE7EBD8"
+            }
+          }
+        ],
+        "/ServerlessCdkProjectStack/StudentItemsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StudentItemsTableBDE7EBD8"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsFunctionServiceRoleC323889C"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsFunctionServiceRoleDefaultPolicy72D40A1B"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsFunction736859B1"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApi3788C05C"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/CloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiCloudWatchRoleC6F450A7"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Account": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiAccount8ED0A917"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiDeployment2A6EC5532f1b4098d30f62f444ff08e6f841a907"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiDeploymentStageprod39700B5C"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiEndpointE9939A7D"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitems0C302221"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/GET/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsGETApiPermissionServerlessCdkProjectStackItemsApiCBD9D3C5GETitemsFBEAAAB9"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/GET/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsGETApiPermissionTestServerlessCdkProjectStackItemsApiCBD9D3C5GETitems98D2092A"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsGET0F801345"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/POST/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.POST..items": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsPOSTApiPermissionServerlessCdkProjectStackItemsApiCBD9D3C5POSTitems508C813F"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/POST/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.POST..items": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsPOSTApiPermissionTestServerlessCdkProjectStackItemsApiCBD9D3C5POSTitems2825273D"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsPOSTE9B0FD12"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsid9B2E43B3"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/GET/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsidGETApiPermissionServerlessCdkProjectStackItemsApiCBD9D3C5GETitemsid0A4E07D9"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/GET/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsidGETApiPermissionTestServerlessCdkProjectStackItemsApiCBD9D3C5GETitemsid96797F9F"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsidGET842BCF1E"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/PUT/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.PUT..items.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsidPUTApiPermissionServerlessCdkProjectStackItemsApiCBD9D3C5PUTitemsid882510F3"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/PUT/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.PUT..items.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsidPUTApiPermissionTestServerlessCdkProjectStackItemsApiCBD9D3C5PUTitemsid3F9F6AD2"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/PUT/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsidPUT9BA4F1B8"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/DELETE/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.DELETE..items.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsidDELETEApiPermissionServerlessCdkProjectStackItemsApiCBD9D3C5DELETEitemsid30CFC4CC"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/DELETE/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.DELETE..items.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsidDELETEApiPermissionTestServerlessCdkProjectStackItemsApiCBD9D3C5DELETEitemsid7ABE2450"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/DELETE/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ItemsApiitemsidDELETE0785B0E9"
+          }
+        ],
+        "/ServerlessCdkProjectStack/ApiUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiUrl"
+          }
+        ],
+        "/ServerlessCdkProjectStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/ServerlessCdkProjectStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/ServerlessCdkProjectStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "ServerlessCdkProjectStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+import * as cdk from "aws-cdk-lib";
+import { Construct } from "constructs";
+export declare class ServerlessCdkProjectStack extends cdk.Stack {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps);{super(Scope, IdleDeadline, props);
+        
+    }
+}

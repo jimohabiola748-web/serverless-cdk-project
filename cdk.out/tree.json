@@ -1,0 +1,1208 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "ServerlessCdkProjectStack": {
+        "id": "ServerlessCdkProjectStack",
+        "path": "ServerlessCdkProjectStack",
+        "children": {
+          "StudentItemsTable": {
+            "id": "StudentItemsTable",
+            "path": "ServerlessCdkProjectStack/StudentItemsTable",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "ServerlessCdkProjectStack/StudentItemsTable/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "id",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "billingMode": "PAY_PER_REQUEST",
+                    "keySchema": [
+                      {
+                        "attributeName": "id",
+                        "keyType": "HASH"
+                      }
+                    ],
+                    "tableName": "StudentItems"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.147.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "ServerlessCdkProjectStack/StudentItemsTable/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.147.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.147.0"
+            }
+          },
+          "ItemsFunction": {
+            "id": "ItemsFunction",
+            "path": "ServerlessCdkProjectStack/ItemsFunction",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "ServerlessCdkProjectStack/ItemsFunction/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "ServerlessCdkProjectStack/ItemsFunction/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.147.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ServerlessCdkProjectStack/ItemsFunction/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.147.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "ServerlessCdkProjectStack/ItemsFunction/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "ServerlessCdkProjectStack/ItemsFunction/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "StudentItemsTableBDE7EBD8",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "ItemsFunctionServiceRoleDefaultPolicy72D40A1B",
+                            "roles": [
+                              {
+                                "Ref": "ItemsFunctionServiceRoleC323889C"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.147.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.147.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.147.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "ServerlessCdkProjectStack/ItemsFunction/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "ServerlessCdkProjectStack/ItemsFunction/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.147.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "ServerlessCdkProjectStack/ItemsFunction/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.147.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.147.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "ServerlessCdkProjectStack/ItemsFunction/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "architectures": [
+                      "x86_64"
+                    ],
+                    "code": {
+                      "s3Bucket": "cdk-hnb659fds-assets-771606957800-ca-central-1",
+                      "s3Key": "3026d3de0d3f6dbf80170c5aef78eda65f50d073394f4bf7b57b0a51c306e434.zip"
+                    },
+                    "environment": {
+                      "variables": {
+                        "TABLE_NAME": {
+                          "Ref": "StudentItemsTableBDE7EBD8"
+                        }
+                      }
+                    },
+                    "handler": "index.handler",
+                    "memorySize": 256,
+                    "role": {
+                      "Fn::GetAtt": [
+                        "ItemsFunctionServiceRoleC323889C",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs18.x",
+                    "timeout": 10
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.147.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda_nodejs.NodejsFunction",
+              "version": "2.147.0"
+            }
+          },
+          "ItemsApi": {
+            "id": "ItemsApi",
+            "path": "ServerlessCdkProjectStack/ItemsApi",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "ServerlessCdkProjectStack/ItemsApi/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::RestApi",
+                  "aws:cdk:cloudformation:props": {
+                    "name": "Student Items Service"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.CfnRestApi",
+                  "version": "2.147.0"
+                }
+              },
+              "CloudWatchRole": {
+                "id": "CloudWatchRole",
+                "path": "ServerlessCdkProjectStack/ItemsApi/CloudWatchRole",
+                "children": {
+                  "ImportCloudWatchRole": {
+                    "id": "ImportCloudWatchRole",
+                    "path": "ServerlessCdkProjectStack/ItemsApi/CloudWatchRole/ImportCloudWatchRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.147.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ServerlessCdkProjectStack/ItemsApi/CloudWatchRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "apigateway.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.147.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.147.0"
+                }
+              },
+              "Account": {
+                "id": "Account",
+                "path": "ServerlessCdkProjectStack/ItemsApi/Account",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Account",
+                  "aws:cdk:cloudformation:props": {
+                    "cloudWatchRoleArn": {
+                      "Fn::GetAtt": [
+                        "ItemsApiCloudWatchRoleC6F450A7",
+                        "Arn"
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.CfnAccount",
+                  "version": "2.147.0"
+                }
+              },
+              "Deployment": {
+                "id": "Deployment",
+                "path": "ServerlessCdkProjectStack/ItemsApi/Deployment",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ServerlessCdkProjectStack/ItemsApi/Deployment/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Deployment",
+                      "aws:cdk:cloudformation:props": {
+                        "description": "Automatically created by the RestApi construct",
+                        "restApiId": {
+                          "Ref": "ItemsApi3788C05C"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnDeployment",
+                      "version": "2.147.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Deployment",
+                  "version": "2.147.0"
+                }
+              },
+              "DeploymentStage.prod": {
+                "id": "DeploymentStage.prod",
+                "path": "ServerlessCdkProjectStack/ItemsApi/DeploymentStage.prod",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ServerlessCdkProjectStack/ItemsApi/DeploymentStage.prod/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Stage",
+                      "aws:cdk:cloudformation:props": {
+                        "deploymentId": {
+                          "Ref": "ItemsApiDeployment2A6EC5532f1b4098d30f62f444ff08e6f841a907"
+                        },
+                        "restApiId": {
+                          "Ref": "ItemsApi3788C05C"
+                        },
+                        "stageName": "prod"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnStage",
+                      "version": "2.147.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Stage",
+                  "version": "2.147.0"
+                }
+              },
+              "Endpoint": {
+                "id": "Endpoint",
+                "path": "ServerlessCdkProjectStack/ItemsApi/Endpoint",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.147.0"
+                }
+              },
+              "Default": {
+                "id": "Default",
+                "path": "ServerlessCdkProjectStack/ItemsApi/Default",
+                "children": {
+                  "items": {
+                    "id": "items",
+                    "path": "ServerlessCdkProjectStack/ItemsApi/Default/items",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "ItemsApi3788C05C",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "items",
+                            "restApiId": {
+                              "Ref": "ItemsApi3788C05C"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.147.0"
+                        }
+                      },
+                      "GET": {
+                        "id": "GET",
+                        "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/GET",
+                        "children": {
+                          "ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items": {
+                            "id": "ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items",
+                            "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/GET/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "ItemsFunction736859B1",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":execute-api:ca-central-1:771606957800:",
+                                      {
+                                        "Ref": "ItemsApi3788C05C"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "ItemsApiDeploymentStageprod39700B5C"
+                                      },
+                                      "/GET/items"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.147.0"
+                            }
+                          },
+                          "ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items": {
+                            "id": "ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items",
+                            "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/GET/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "ItemsFunction736859B1",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":execute-api:ca-central-1:771606957800:",
+                                      {
+                                        "Ref": "ItemsApi3788C05C"
+                                      },
+                                      "/test-invoke-stage/GET/items"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.147.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/GET/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "NONE",
+                                "httpMethod": "GET",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":apigateway:ca-central-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "ItemsFunction736859B1",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                },
+                                "resourceId": {
+                                  "Ref": "ItemsApiitems0C302221"
+                                },
+                                "restApiId": {
+                                  "Ref": "ItemsApi3788C05C"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.147.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.147.0"
+                        }
+                      },
+                      "POST": {
+                        "id": "POST",
+                        "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/POST",
+                        "children": {
+                          "ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.POST..items": {
+                            "id": "ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.POST..items",
+                            "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/POST/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.POST..items",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "ItemsFunction736859B1",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":execute-api:ca-central-1:771606957800:",
+                                      {
+                                        "Ref": "ItemsApi3788C05C"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "ItemsApiDeploymentStageprod39700B5C"
+                                      },
+                                      "/POST/items"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.147.0"
+                            }
+                          },
+                          "ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.POST..items": {
+                            "id": "ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.POST..items",
+                            "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/POST/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.POST..items",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "ItemsFunction736859B1",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":execute-api:ca-central-1:771606957800:",
+                                      {
+                                        "Ref": "ItemsApi3788C05C"
+                                      },
+                                      "/test-invoke-stage/POST/items"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.147.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/POST/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "NONE",
+                                "httpMethod": "POST",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":apigateway:ca-central-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "ItemsFunction736859B1",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                },
+                                "resourceId": {
+                                  "Ref": "ItemsApiitems0C302221"
+                                },
+                                "restApiId": {
+                                  "Ref": "ItemsApi3788C05C"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.147.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.147.0"
+                        }
+                      },
+                      "{id}": {
+                        "id": "{id}",
+                        "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                              "aws:cdk:cloudformation:props": {
+                                "parentId": {
+                                  "Ref": "ItemsApiitems0C302221"
+                                },
+                                "pathPart": "{id}",
+                                "restApiId": {
+                                  "Ref": "ItemsApi3788C05C"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                              "version": "2.147.0"
+                            }
+                          },
+                          "GET": {
+                            "id": "GET",
+                            "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/GET",
+                            "children": {
+                              "ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items.{id}": {
+                                "id": "ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items.{id}",
+                                "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/GET/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items.{id}",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "ItemsFunction736859B1",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:ca-central-1:771606957800:",
+                                          {
+                                            "Ref": "ItemsApi3788C05C"
+                                          },
+                                          "/",
+                                          {
+                                            "Ref": "ItemsApiDeploymentStageprod39700B5C"
+                                          },
+                                          "/GET/items/*"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.147.0"
+                                }
+                              },
+                              "ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items.{id}": {
+                                "id": "ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items.{id}",
+                                "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/GET/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.GET..items.{id}",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "ItemsFunction736859B1",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:ca-central-1:771606957800:",
+                                          {
+                                            "Ref": "ItemsApi3788C05C"
+                                          },
+                                          "/test-invoke-stage/GET/items/*"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.147.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/GET/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                                  "aws:cdk:cloudformation:props": {
+                                    "authorizationType": "NONE",
+                                    "httpMethod": "GET",
+                                    "integration": {
+                                      "type": "AWS_PROXY",
+                                      "uri": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":apigateway:ca-central-1:lambda:path/2015-03-31/functions/",
+                                            {
+                                              "Fn::GetAtt": [
+                                                "ItemsFunction736859B1",
+                                                "Arn"
+                                              ]
+                                            },
+                                            "/invocations"
+                                          ]
+                                        ]
+                                      },
+                                      "integrationHttpMethod": "POST"
+                                    },
+                                    "resourceId": {
+                                      "Ref": "ItemsApiitemsid9B2E43B3"
+                                    },
+                                    "restApiId": {
+                                      "Ref": "ItemsApi3788C05C"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                                  "version": "2.147.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                              "version": "2.147.0"
+                            }
+                          },
+                          "PUT": {
+                            "id": "PUT",
+                            "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/PUT",
+                            "children": {
+                              "ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.PUT..items.{id}": {
+                                "id": "ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.PUT..items.{id}",
+                                "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/PUT/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.PUT..items.{id}",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "ItemsFunction736859B1",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:ca-central-1:771606957800:",
+                                          {
+                                            "Ref": "ItemsApi3788C05C"
+                                          },
+                                          "/",
+                                          {
+                                            "Ref": "ItemsApiDeploymentStageprod39700B5C"
+                                          },
+                                          "/PUT/items/*"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.147.0"
+                                }
+                              },
+                              "ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.PUT..items.{id}": {
+                                "id": "ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.PUT..items.{id}",
+                                "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/PUT/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.PUT..items.{id}",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "ItemsFunction736859B1",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:ca-central-1:771606957800:",
+                                          {
+                                            "Ref": "ItemsApi3788C05C"
+                                          },
+                                          "/test-invoke-stage/PUT/items/*"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.147.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/PUT/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                                  "aws:cdk:cloudformation:props": {
+                                    "authorizationType": "NONE",
+                                    "httpMethod": "PUT",
+                                    "integration": {
+                                      "type": "AWS_PROXY",
+                                      "uri": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":apigateway:ca-central-1:lambda:path/2015-03-31/functions/",
+                                            {
+                                              "Fn::GetAtt": [
+                                                "ItemsFunction736859B1",
+                                                "Arn"
+                                              ]
+                                            },
+                                            "/invocations"
+                                          ]
+                                        ]
+                                      },
+                                      "integrationHttpMethod": "POST"
+                                    },
+                                    "resourceId": {
+                                      "Ref": "ItemsApiitemsid9B2E43B3"
+                                    },
+                                    "restApiId": {
+                                      "Ref": "ItemsApi3788C05C"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                                  "version": "2.147.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                              "version": "2.147.0"
+                            }
+                          },
+                          "DELETE": {
+                            "id": "DELETE",
+                            "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/DELETE",
+                            "children": {
+                              "ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.DELETE..items.{id}": {
+                                "id": "ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.DELETE..items.{id}",
+                                "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/DELETE/ApiPermission.ServerlessCdkProjectStackItemsApiCBD9D3C5.DELETE..items.{id}",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "ItemsFunction736859B1",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:ca-central-1:771606957800:",
+                                          {
+                                            "Ref": "ItemsApi3788C05C"
+                                          },
+                                          "/",
+                                          {
+                                            "Ref": "ItemsApiDeploymentStageprod39700B5C"
+                                          },
+                                          "/DELETE/items/*"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.147.0"
+                                }
+                              },
+                              "ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.DELETE..items.{id}": {
+                                "id": "ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.DELETE..items.{id}",
+                                "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/DELETE/ApiPermission.Test.ServerlessCdkProjectStackItemsApiCBD9D3C5.DELETE..items.{id}",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "ItemsFunction736859B1",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:ca-central-1:771606957800:",
+                                          {
+                                            "Ref": "ItemsApi3788C05C"
+                                          },
+                                          "/test-invoke-stage/DELETE/items/*"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.147.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "ServerlessCdkProjectStack/ItemsApi/Default/items/{id}/DELETE/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                                  "aws:cdk:cloudformation:props": {
+                                    "authorizationType": "NONE",
+                                    "httpMethod": "DELETE",
+                                    "integration": {
+                                      "type": "AWS_PROXY",
+                                      "uri": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":apigateway:ca-central-1:lambda:path/2015-03-31/functions/",
+                                            {
+                                              "Fn::GetAtt": [
+                                                "ItemsFunction736859B1",
+                                                "Arn"
+                                              ]
+                                            },
+                                            "/invocations"
+                                          ]
+                                        ]
+                                      },
+                                      "integrationHttpMethod": "POST"
+                                    },
+                                    "resourceId": {
+                                      "Ref": "ItemsApiitemsid9B2E43B3"
+                                    },
+                                    "restApiId": {
+                                      "Ref": "ItemsApi3788C05C"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                                  "version": "2.147.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                              "version": "2.147.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                          "version": "2.147.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.147.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.ResourceBase",
+                  "version": "2.147.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_apigateway.RestApi",
+              "version": "2.147.0"
+            }
+          },
+          "ApiUrl": {
+            "id": "ApiUrl",
+            "path": "ServerlessCdkProjectStack/ApiUrl",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.147.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "ServerlessCdkProjectStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "ServerlessCdkProjectStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.147.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.8.1"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "ServerlessCdkProjectStack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.147.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "ServerlessCdkProjectStack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.147.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.147.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.8.1"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.147.0"
+    }
+  }
+}
